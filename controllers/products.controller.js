@@ -5,29 +5,31 @@ const ProductModel = require('../models/products.model');
 //const menFormalShirts = require('../myntraDataset/men-formal-shirts.json');
 //const menInnerwearAndSleapwear = require('../myntraDataset/men-innerwear-and-sleapwear.json');
 //const menJacketsAndCoats = require('../myntraDataset/men-jackets-coats.json');
-//const menJeans = require('../myntraDataset/men-jeans.json');
+const menJeans = require('../myntraDataset/men-jeans.json');
 //const menSuits = require('../myntraDataset/men-suits.json');
 const menTrackPants = require('../myntraDataset/men-track-pants.json');
 const menTshirts = require('../myntraDataset/men-tshirts.json');
+// const CSVjSON = require('../myntraDataset/csvjson.json');
+
 
 
 const createProduct = async(req, res)=>
 {
-    for(let i =0; i<menTshirts.length; i++)
-    {
-        try
-        {
-            await ProductModel.insertMany([menTshirts[i]]);
+    // for(let i =0; i<menTshirts.length; i++)
+    // {
+    //     try
+        // {
+            await ProductModel.insertMany(menJeans);
+            res.send("created")
+        // }
+        // catch(err)
+        // {
+        //     continue;
+        //     //console.log(err);
             
-        }
-        catch(err)
-        {
-            continue;
-            //console.log(err);
-            
-        }
+        // }
         
-    }
+    // }
 }
 
 module.exports = {createProduct};
