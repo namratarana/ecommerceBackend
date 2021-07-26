@@ -17,6 +17,6 @@ Mongoose.connect(process.env.DB_URL, {
     useFindAndModify: false
    })
 
-app.listen(5000, ()=>{console.log("server is listening to port");})
+app.listen(5000, ()=>{console.log("server is listening to port at");})
 
 Routes(app);
