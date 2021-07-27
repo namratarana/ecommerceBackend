@@ -1,3 +1,4 @@
+const productsModel = require('../models/products.model');
 const ProductModel = require('../models/products.model');
 //const menAccessories = require('../myntraDataset/men-accessories.json');
 //const menCasualShirts = require('../myntraDataset/men-casual-shirts.json');
@@ -5,10 +6,10 @@ const ProductModel = require('../models/products.model');
 //const menFormalShirts = require('../myntraDataset/men-formal-shirts.json');
 //const menInnerwearAndSleapwear = require('../myntraDataset/men-innerwear-and-sleapwear.json');
 //const menJacketsAndCoats = require('../myntraDataset/men-jackets-coats.json');
-const menJeans = require('../myntraDataset/men-jeans.json');
+// const menJeans = require('../myntraDataset/men-jeans.json');
 //const menSuits = require('../myntraDataset/men-suits.json');
-const menTrackPants = require('../myntraDataset/men-track-pants.json');
-const menTshirts = require('../myntraDataset/men-tshirts.json');
+// const menTrackPants = require('../myntraDataset/men-track-pants.json');
+// const menTshirts = require('../myntraDataset/men-tshirts.json');
 // const CSVjSON = require('../myntraDataset/csvjson.json');
 
 
@@ -19,8 +20,8 @@ const createProduct = async(req, res)=>
     // {
     //     try
         // {
-            await ProductModel.insertMany(menJeans);
-            res.send("created")
+            // await ProductModel.insertMany(menJeans);
+            // res.send("created")
         // }
         // catch(err)
         // {
@@ -31,5 +32,44 @@ const createProduct = async(req, res)=>
         
     // }
 }
+const fetchProductCategory = async(req,res)=>
+{
+    try
+    {
+       const products = await ProductModel.find({"CATEGORY": req.params.category}).limit(50)
+       res.status(200).json(products)
 
-module.exports = {createProduct};
+    }
+    catch(err)
+    {
+        console.log(err)
+        res.status(400).json(err)
+    }
+}
+const fetchNewproducts = async(req,res)=>
+{
+    try
+    {
+        const products = await ProductModel.find().sort({$natural:-1}).limit(4)
+        res.status(200).json(products)
+    }
+    catch(err)
+    {
+        console.log(err)
+        res.status(400).json(err)
+    }
+}
+const fetchPopularProducts = async(req,res)=>
+{
+    try
+    {
+        const products = await ProductModel.find().sort({"RATING":-1}).limit(4)
+        res.status(200).json(products)
+    }
+    catch(err)
+    {
+        res.status(400).json(err)
+    }
+}
+
+module.exports = {createProduct,fetchProductCategory,fetchNewproducts,fetchPopularProducts};
