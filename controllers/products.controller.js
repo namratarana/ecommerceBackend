@@ -34,11 +34,23 @@ const createProduct = async(req, res)=>
 }
 const fetchProductCategory = async(req,res)=>
 {
+    const category = req.params.category.split("-or-");
+    console.log(category);
     try
     {
-       const products = await ProductModel.find({"CATEGORY": req.params.category}).limit(50)
-       res.status(200).json(products)
-
+       let products;
+       if(category.length >1)
+       {
+            const product1 = await ProductModel.find({"CATEGORY": category[0]}).limit(25);
+            const product2 = await ProductModel.find({"CATEGORY": category[1]}).limit(25);
+            products = product1.concat(product2);
+       }
+       else
+       {
+            products = await ProductModel.find({"CATEGORY": req.params.category}).limit(50)
+           
+       }
+       res.status(200).json({message:'category products sent',products:products})
     }
     catch(err)
     {
@@ -50,8 +62,8 @@ const fetchNewproducts = async(req,res)=>
 {
     try
     {
-        const products = await ProductModel.find().sort({$natural:-1}).limit(4)
-        res.status(200).json(products)
+        const newProducts = await ProductModel.find().sort({$natural:-1}).limit(4)
+        res.status(200).json({message:'new products sent',products:newProducts});
     }
     catch(err)
     {
@@ -63,8 +75,8 @@ const fetchPopularProducts = async(req,res)=>
 {
     try
     {
-        const products = await ProductModel.find().sort({"RATING":-1}).limit(4)
-        res.status(200).json(products)
+        const popProducts = await ProductModel.find().sort({"RATING":-1}).limit(4)
+        res.status(200).json({message:'popular products sent',products:popProducts})
     }
     catch(err)
     {
