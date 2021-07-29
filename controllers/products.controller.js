@@ -38,9 +38,10 @@ const fetchProductCategory = async(req,res)=>
     console.log(req.query);
     const category = req.query.cat.split(",");
     const price = req.query.price.split(",");
-    console.log(category, price);
+    const size = req.query.size?req.query.size.split(","):[]
+    console.log(category, price,size);
     const product = await ProductModel.find({$and:[{"CATEGORY": category},{"PRICE": {$gte:price[0],$lte:price[1] }}]}).limit(50)
-    //console.log(product);
+    // console.log(product);
     res.status(200).json({products: product});
     // try
     // {
