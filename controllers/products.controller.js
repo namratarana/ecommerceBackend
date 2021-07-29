@@ -34,29 +34,35 @@ const createProduct = async(req, res)=>
 }
 const fetchProductCategory = async(req,res)=>
 {
-    const category = req.params.category.split("-or-");
-    console.log(category);
-    try
-    {
-       let products;
-       if(category.length >1)
-       {
-            const product1 = await ProductModel.find({"CATEGORY": category[0]}).limit(25);
-            const product2 = await ProductModel.find({"CATEGORY": category[1]}).limit(25);
-            products = product1.concat(product2);
-       }
-       else
-       {
-            products = await ProductModel.find({"CATEGORY": req.params.category}).limit(50)
+    
+    console.log(req.query);
+    const category = req.query.cat.split(",");
+    const price = req.query.price.split(",");
+    console.log(category, price);
+    const product = await ProductModel.find({$and:[{"CATEGORY": category},{"PRICE": {$gte:price[0],$lte:price[1] }}]}).limit(50)
+    //console.log(product);
+    res.status(200).json({products: product});
+    // try
+    // {
+    //    let products;
+    //    if(category.length >1)
+    //    {
+    //         const product1 = await ProductModel.find({"CATEGORY": category[0]}).limit(25);
+    //         const product2 = await ProductModel.find({"CATEGORY": category[1]}).limit(25);
+    //         products = product1.concat(product2);
+    //    }
+    //    else
+    //    {
+    //         products = await ProductModel.find({"CATEGORY": req.params.category}).limit(50)
            
-       }
-       res.status(200).json({message:'category products sent',products:products})
-    }
-    catch(err)
-    {
-        console.log(err)
-        res.status(400).json(err)
-    }
+    //    }
+    //    res.status(200).json({message:'category products sent',products:products})
+    // }
+    // catch(err)
+    // {
+    //     console.log(err)
+    //     res.status(400).json(err)
+    // }
 }
 const fetchNewproducts = async(req,res)=>
 {
