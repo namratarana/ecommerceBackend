@@ -12,9 +12,12 @@ const productModel = new Schema(
         PRICE: {type:Number, required:true},
         SIZE: {type:String},
         PRODUCT_ID: {type:Number, required:true, Unique:true},
+        BRAND:{type:String},
+        SUBCATEGORY:{type:String}
         //WEBSITE: {type:String, required:true},
         //PRODUCT_URL: {type:String, required:true}
       }
 
 )
+productModel.index({NAME:'text', DESCRIPTION_COLOR: 'text'});
 module.exports = Mongoose.model('products',productModel);
