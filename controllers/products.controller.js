@@ -35,7 +35,6 @@ const createProduct = async(req, res)=>
 const fetchProductCategory = async(req,res)=>
 {
     const arr = [];
-    
     const category = req.query.cat!='null' && req.query.cat!=''?arr.push({"CATEGORY":req.query.cat.split(",")}):null;
     // const price = req.query.price?arr.push({req.query.price.split(",")}):null;
     const size = req.query.size!='null' && req.query.size!=''?arr.push({"SIZE":req.query.size.split(",")}):null;
