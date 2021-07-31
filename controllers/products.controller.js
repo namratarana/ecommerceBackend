@@ -34,13 +34,17 @@ const createProduct = async(req, res)=>
 }
 const fetchProductCategory = async(req,res)=>
 {
+    const arr = [];
     
-    console.log(req.query);
-    const category = req.query.cat.split(",");
-    const price = req.query.price.split(",");
-    const size = req.query.size?req.query.size.split(","):[]
-    console.log(category, price,size);
-    const product = await ProductModel.find({$and:[{"CATEGORY": category},{"PRICE": {$gte:price[0],$lte:price[1] }}]}).limit(50)
+    const category = req.query.cat!='null' && req.query.cat!=''?arr.push({"CATEGORY":req.query.cat.split(",")}):null;
+    // const price = req.query.price?arr.push({req.query.price.split(",")}):null;
+    const size = req.query.size!='null' && req.query.size!=''?arr.push({"SIZE":req.query.size.split(",")}):null;
+    const fabric = req.query.fab!='null' && req.query.fab!=''?arr.push({"FABRIC":req.query.fab.split(",")}):null;
+    const brand =req.query.brand!='null' && req.query.brand!=''?arr.push({"BRAND": req.query.brand.split(",")}):null;
+    const colorString=req.query.color.split(",").join(" ")
+    const color =req.query.color!='null' && req.query.color!=''?arr.push({$text:{$search:colorString}}):null;
+    console.log(arr);
+    const product = await ProductModel.find({$and:arr}).limit(50)
     // console.log(product);
     res.status(200).json({products: product});
     // try
@@ -64,6 +68,22 @@ const fetchProductCategory = async(req,res)=>
     //     console.log(err)
     //     res.status(400).json(err)
     // }
+}
+const distinctData = async(req,res)=>
+{
+    try
+    {
+        const category=await ProductModel.distinct("CATEGORY")
+        const fabric=await ProductModel.distinct("FABRIC")
+        const size=await ProductModel.distinct("SIZE")
+        const brand=await ProductModel.distinct("BRAND")
+        res.status(200).json({category:category,fabric:fabric,size:size,brand:brand});
+    }
+    catch(err)
+    {
+        console.log(err)
+        res.status(400).json(err)
+    }
 }
 const fetchNewproducts = async(req,res)=>
 {
@@ -91,4 +111,4 @@ const fetchPopularProducts = async(req,res)=>
     }
 }
 
-module.exports = {createProduct,fetchProductCategory,fetchNewproducts,fetchPopularProducts};
+module.exports = {createProduct,fetchProductCategory,fetchNewproducts,fetchPopularProducts,distinctData};

@@ -19,5 +19,5 @@ const productModel = new Schema(
       }
 
 )
-productModel.index({NAME:'text', DESCRIPTION_COLOR: 'text'});
+productModel.index({DESCRIPTION_COLOR: 'text'});
 module.exports = Mongoose.model('products',productModel);
