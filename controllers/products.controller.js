@@ -36,7 +36,7 @@ const fetchProductCategory = async(req,res)=>
 {
     const arr = [];
     const category = req.query.cat!='null' && req.query.cat!=''?arr.push({"CATEGORY":req.query.cat.split(",")}):null;
-    const price = req.query.price?arr.push({"PRICE":{$gte:parseInt(req.query.price.split(",")[0]),$lte:parseInt(req.query.price.split(",")[1])}}):null;
+    const price =req.query.price!='null' && req.query.price!=''?arr.push({"PRICE":{$gte:parseInt(req.query.price.split(",")[0]),$lte:parseInt(req.query.price.split(",")[1])}}):null;
     const size = req.query.size!='null' && req.query.size!=''?arr.push({"SIZE":req.query.size.split(",")}):null;
     const fabricString = req.query.fab.split(",").join(" ")
     const fabric = req.query.fab!='null' && req.query.fab!=''?arr.push({$text:{$search:fabricString}}):null;
