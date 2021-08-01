@@ -43,10 +43,27 @@ const fetchProductCategory = async(req,res)=>
     const brand =req.query.brand!='null' && req.query.brand!=''?arr.push({"BRAND": req.query.brand.split(",")}):null;
     const colorString=req.query.color.split(",").join(" ")
     const color =req.query.color!='null' && req.query.color!=''?arr.push({$text:{$search:colorString}}):null;
+    const offset = parseInt(req.query.offset);
     console.log(arr);
-    const product = await ProductModel.find({$and:arr}).limit(50)
+
+    let sortCriteria = {};
+    if(req.query.sort == 'high')
+    {
+        sortCriteria["PRICE"] = -1;
+    }
+    else if(req.query.sort == 'low')
+    {
+        sortCriteria["PRICE"] = 1;
+    }
+    else
+    {
+        sortCriteria["RATING"] =-1;
+    }
+    const product = await ProductModel.find({$and:arr}).skip(offset).limit(50).sort(sortCriteria);
+    const countProducts = await ProductModel.find({$and:arr}).count()
+   
     // console.log(product);
-    res.status(200).json({products: product}); 
+    res.status(200).json({products: product, totalProducts: countProducts}); 
     // try
     // {
     //    let products;
