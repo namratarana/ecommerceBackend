@@ -2,7 +2,6 @@ const Express = require('express');
 const productController = require('./controllers/products.controller');
 const productRouter = Express.Router();
 
-productRouter.get('/create', productController.createProduct);
 productRouter.get('/product/:id', productController.fetchById)
 productRouter.get('/categories', productController.fetchProductCategory)
 productRouter.get('/new', productController.fetchNewproducts)

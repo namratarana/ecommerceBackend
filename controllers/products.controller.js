@@ -12,26 +12,6 @@ const ProductModel = require('../models/products.model');
 // const menTshirts = require('../myntraDataset/men-tshirts.json');
 // const CSVjSON = require('../myntraDataset/csvjson.json');
 
-
-
-const createProduct = async(req, res)=>
-{
-    // for(let i =0; i<menTshirts.length; i++)
-    // {
-    //     try
-        // {
-            // await ProductModel.insertMany(menJeans);
-            // res.send("created")
-        // }
-        // catch(err)
-        // {
-        //     continue;
-        //     //console.log(err);
-            
-        // }
-        
-    // }
-}
 const fetchProductCategory = async(req,res)=>
 {
     const arr = [];
@@ -64,27 +44,7 @@ const fetchProductCategory = async(req,res)=>
    
     // console.log(product);
     res.status(200).json({products: product, totalProducts: countProducts}); 
-    // try
-    // {
-    //    let products;
-    //    if(category.length >1)
-    //    {
-    //         const product1 = await ProductModel.find({"CATEGORY": category[0]}).limit(25);
-    //         const product2 = await ProductModel.find({"CATEGORY": category[1]}).limit(25);
-    //         products = product1.concat(product2);
-    //    }
-    //    else
-    //    {
-    //         products = await ProductModel.find({"CATEGORY": req.params.category}).limit(50)
-           
-    //    }
-    //    res.status(200).json({message:'category products sent',products:products})
-    // }
-    // catch(err)
-    // {
-    //     console.log(err)
-    //     res.status(400).json(err)
-    // }
+
 }
 const distinctData = async(req,res)=>
 {
@@ -106,7 +66,7 @@ const fetchNewproducts = async(req,res)=>
 {
     try
     {
-        const newProducts = await ProductModel.find().sort({$natural:-1}).limit(4)
+        const newProducts = await ProductModel.find().sort({$natural:-1}).limit(10)
         res.status(200).json({message:'new products sent',products:newProducts});
     }
     catch(err)
@@ -119,7 +79,7 @@ const fetchPopularProducts = async(req,res)=>
 {
     try
     {
-        const popProducts = await ProductModel.find().sort({"RATING":-1}).limit(4)
+        const popProducts = await ProductModel.find().sort({"RATING":-1}).limit(10)
         res.status(200).json({message:'popular products sent',products:popProducts})
     }
     catch(err)
@@ -139,4 +99,4 @@ const fetchById = async(req,res) =>
         res.status(400).json(err);
     }
 }
-module.exports = {createProduct,fetchProductCategory,fetchNewproducts,fetchPopularProducts,distinctData,fetchById};
+module.exports = {fetchProductCategory,fetchNewproducts,fetchPopularProducts,distinctData,fetchById};
