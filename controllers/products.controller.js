@@ -127,5 +127,16 @@ const fetchPopularProducts = async(req,res)=>
         res.status(400).json(err)
     }
 }
-
-module.exports = {createProduct,fetchProductCategory,fetchNewproducts,fetchPopularProducts,distinctData};
+const fetchById = async(req,res) =>
+{
+    try
+    {
+        const product = await ProductModel.find({"PRODUCT_ID": req.params.id});
+        res.status(200).json({products:product});
+    }
+    catch(err)
+    {
+        res.status(400).json(err);
+    }
+}
+module.exports = {createProduct,fetchProductCategory,fetchNewproducts,fetchPopularProducts,distinctData,fetchById};
