@@ -14,15 +14,20 @@ const ProductModel = require('../models/products.model');
 
 const fetchProductCategory = async(req,res)=>
 {
+    // console.log(req.query.cat.split(","))
+    // console.log(req.query.brand.split(","))
+    // console.log(req.query.price)
+    
     const arr = [];
-    const category = req.query.cat!='null' && req.query.cat!=''?arr.push({"CATEGORY":req.query.cat.split(",")}):null;
-    const price =req.query.price!='null' && req.query.price!=''?arr.push({"PRICE":{$gte:parseInt(req.query.price.split(",")[0]),$lte:parseInt(req.query.price.split(",")[1])}}):null;
-    const size = req.query.size!='null' && req.query.size!=''?arr.push({"SIZE":req.query.size.split(",")}):null;
-    const fabricString = req.query.fab.split(",").join(" ")
-    const fabric = req.query.fab!='null' && req.query.fab!=''?arr.push({$text:{$search:fabricString}}):null;
-    const brand =req.query.brand!='null' && req.query.brand!=''?arr.push({"BRAND": req.query.brand.split(",")}):null;
-    const colorString=req.query.color.split(",").join(" ")
-    const color =req.query.color!='null' && req.query.color!=''?arr.push({$text:{$search:colorString}}):null;
+    const category = req.query.cat != undefined && req.query.cat!='null' && req.query.cat!=''?arr.push({"CATEGORY":req.query.cat.split(",")}):null;
+    const price = req.query.price != undefined && req.query.price!='null' && req.query.price!=''?arr.push({"PRICE":{$gte:parseInt(req.query.price.split(",")[0]),$lte:parseInt(req.query.price.split(",")[1])}}):null;
+    const size = req.query.size != undefined && req.query.size!='null' && req.query.size!=''?arr.push({"SIZE":req.query.size.split(",")}):null;
+    const fabricString = req.query.fab != undefined?req.query.fab.split(",").join(" "):null
+    const fabric = req.query.fab != undefined && req.query.fab!='null' && req.query.fab!=''?arr.push({$text:{$search:fabricString}}):null;
+    const brand = req.query.brand != undefined && req.query.brand!='null' && req.query.brand!=''?arr.push({"BRAND": req.query.brand.split(",")}):null;
+    console.log(category,brand)
+    const colorString= req.query.color != undefined ?req.query.color.split(",").join(" "):null
+    const color = req.query.color != undefined && req.query.color!='null' && req.query.color!=''?arr.push({$text:{$search:colorString}}):null;
     const offset = parseInt(req.query.offset);
     console.log(arr);
 
