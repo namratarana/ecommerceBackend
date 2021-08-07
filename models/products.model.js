@@ -14,7 +14,10 @@ const productModel = new Schema(
         PRODUCT_ID: {type:Number, required:true, Unique:true},
         BRAND:{type:String},
         SUBCATEGORY:{type:String},
-        SEARCH_TEXT:{type:String}
+        SEARCH_TEXT:{type:String},
+        RATING:{type:Number},
+        COLOR:{type:String},
+        PRICE_RANGE:{type:String}
 
       }
 
