@@ -69,7 +69,7 @@ const fetchNewproducts = async(req,res)=>
 {
     try
     {
-        const newProducts = await ProductModel.find().sort({$natural:-1}).limit(10)
+        const newProducts = await ProductModel.find().sort({$natural:-1}).limit(50)
         res.status(200).json({message:'new products sent',products:newProducts});
     }
     catch(err)
@@ -82,7 +82,7 @@ const fetchPopularProducts = async(req,res)=>
 {
     try
     {
-        const popProducts = await ProductModel.find().sort({"RATING":-1}).limit(10)
+        const popProducts = await ProductModel.find().sort({"RATING":-1}).limit(50)
         res.status(200).json({message:'popular products sent',products:popProducts})
     }
     catch(err)
