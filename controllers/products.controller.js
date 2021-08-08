@@ -51,7 +51,7 @@ const fetchProductCategory = async(req,res)=>
 
     }
     else{
-     product = await ProductModel.find().skip(offset).limit(50).sort(sortCriteria).allowDiskUse(); 
+     product = await ProductModel.find().skip(offset).limit(50).sort(sortCriteria); 
      countProducts = await ProductModel.find().count()
 
     }
