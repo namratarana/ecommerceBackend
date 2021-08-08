@@ -42,8 +42,19 @@ const fetchProductCategory = async(req,res)=>
     {
         sortCriteria["RATING"] =-1;
     }
-    const product = await ProductModel.find({$and:arr}).skip(offset).limit(50).sort(sortCriteria);
-    const countProducts = await ProductModel.find({$and:arr}).count()
+    let product;
+    let countProducts
+    if(arr.length>0){
+     product = await ProductModel.find({$and:arr}).skip(offset).limit(50).sort(sortCriteria);
+     countProducts = await ProductModel.find({$and:arr}).count()
+
+
+    }
+    else{
+     product = await ProductModel.find().skip(offset).limit(50).sort(sortCriteria); 
+     countProducts = await ProductModel.find().count()
+
+    }
    
     // console.log(product);
     res.status(200).json({products: product, totalProducts: countProducts}); 

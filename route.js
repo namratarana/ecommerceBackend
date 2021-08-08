@@ -7,7 +7,7 @@ productRouter.get('/categories', productController.fetchProductCategory)
 productRouter.get('/new', productController.fetchNewproducts)
 productRouter.get('/popular', productController.fetchPopularProducts)
 productRouter.get('/distinct', productController.distinctData)
-
+productRouter.get('/popular/categories', productController.fetchProductCategory)
 
 
 const routes =(app)=>
