@@ -28,23 +28,55 @@ const fetchProductCategory = async(req,res)=>
     const colorString= req.query.color != undefined ?req.query.color.split(",").join(" "):null
     const color = req.query.color != undefined && req.query.color!='null' && req.query.color!=''?arr.push({$text:{$search:colorString}}):null;
     const offset = parseInt(req.query.offset);
+    const sort = req.query.sort!=undefined?req.query.sort.split(","):null
 
     let sortCriteria = {};
-    if(req.query.sort == 'high')
+    if(sort!=null){
+    if(sort[0] == 'popular' && sort[1]=='high')
     {
+        sortCriteria["RATING"] = -1
         sortCriteria["PRICE"] = -1;
     }
-    else if(req.query.sort == 'low')
+    else if(sort[0] == 'popular' && sort[1]=='low')
     {
+        sortCriteria["RATING"]=-1
         sortCriteria["PRICE"] = 1;
     }
-    else if(req.query.sort==='rating')
+    else if(sort[0] == 'popular' && sort[1]== 'rating')
     {
         sortCriteria["RATING"] =-1;
     }
-    else{
-        sortCriteria={$natural:-1}
+    else if(sort[0] == 'new' && sort[1]=='high')
+    {
+        sortCriteria["_id"]=-1
+        sortCriteria["PRICE"] = -1;
     }
+    else if(sort[0] == 'new' && sort[1]=='low')
+    {
+        sortCriteria["_id"]=-1
+        sortCriteria["PRICE"] = 1;
+    }
+    else if(sort[0] == 'new' && sort[1]== 'rating')
+    {
+        sortCriteria["_id"]=-1
+        sortCriteria["RATING"] =-1;
+    }
+    else if(sort[1]=='high')
+    {
+        sortCriteria["PRICE"] = -1;
+    }
+    else if(sort[1]=='low')
+    {
+        sortCriteria["PRICE"] = 1;
+    }
+    else if(sort[1]== 'rating')
+    {
+        sortCriteria["RATING"] =-1;
+    }
+}
+
+    console.log(sortCriteria)
+    
     let product;
     let countProducts
     if(arr.length>0){
