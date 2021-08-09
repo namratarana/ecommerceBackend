@@ -38,9 +38,12 @@ const fetchProductCategory = async(req,res)=>
     {
         sortCriteria["PRICE"] = 1;
     }
-    else
+    else if(req.query.sort==='rating')
     {
         sortCriteria["RATING"] =-1;
+    }
+    else{
+        sortCriteria={$natural:-1}
     }
     let product;
     let countProducts
