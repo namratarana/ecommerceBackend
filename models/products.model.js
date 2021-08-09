@@ -9,7 +9,7 @@ const productModel = new Schema(
         DESCRIPTION_COLOR: {type:String, required:true},
         FABRIC: {type:String},
         IMAGE: {type:String, required:true},
-        PRICE: {type:Number, required:true},
+        PRICE: {type:Number, required:true,index:true},
         SIZE: {type:String},
         PRODUCT_ID: {type:Number, required:true, Unique:true},
         BRAND:{type:String},
