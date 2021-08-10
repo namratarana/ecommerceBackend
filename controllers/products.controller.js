@@ -29,8 +29,9 @@ const fetchProductCategory = async(req,res)=>
     const color = req.query.color != undefined && req.query.color!='null' && req.query.color!=''?arr.push({$text:{$search:colorString}}):null;
     const offset = parseInt(req.query.offset);
     const sort = req.query.sort!=undefined?req.query.sort.split(","):null
-    const search = req.query.search != undefined && req.query.search!='null' && req.query.search!=''?arr.push({$text:{$search:req.query.search}}):null;
-
+    const search = req.query.search != "undefined" && req.query.search!='null' && req.query.search!=''?arr.push({$text:{$search:req.query.search}}):null;
+    console.log(arr)
+    
 
     let sortCriteria = {};
     if(sort!=null){
