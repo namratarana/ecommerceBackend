@@ -26,12 +26,12 @@ const fetchProductCategory = async(req,res)=>
     const fabric = req.query.fab != undefined && req.query.fab!='null' && req.query.fab!=''?arr.push({$text:{$search:fabricString}}):null;
     const brand = req.query.brand != undefined && req.query.brand!='null' && req.query.brand!=''?arr.push({"BRAND": req.query.brand.split(",")}):null;
     const colorString= req.query.color != undefined ?req.query.color.split(",").join(" "):null
-    const color = req.query.color != undefined && req.query.color!='null' && req.query.color!=''?arr.push({$text:{$search:colorString}}):null;
+    const color = req.query.color != undefined && req.query.color!='null' && req.query.color!=''?arr.push({"COLOR": req.query.color.split(",")}):null;
     const offset = parseInt(req.query.offset);
     const sort = req.query.sort!=undefined?req.query.sort.split(","):null
-    const search = req.query.search != "undefined" && req.query.search!='null' && req.query.search!=''?arr.push({$text:{$search:req.query.search}}):null;
+    const search = req.query.search != "undefined" && req.query.search != undefined && req.query.search!='null' && req.query.search!=''?arr.push({$text:{$search:req.query.search}}):null;
     console.log(arr)
-    
+
 
     let sortCriteria = {};
     if(sort!=null){
