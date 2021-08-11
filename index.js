@@ -1,7 +1,7 @@
 const Express = require('express');
 const Mongoose = require('mongoose');
 const Cors = require('cors');
-const JWT = require('jsonwebtoken');
+//const JWT = require('jsonwebtoken');
 const Dotenv = require('dotenv');
 const Routes = require('./route');
 Dotenv.config();
