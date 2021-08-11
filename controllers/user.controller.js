@@ -1,6 +1,7 @@
 const UserModel = require('../models/user.model')
 const Bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
+const nodemailer = require('nodemailer'); 
 
 const signUp = async(req,res)=>{
 
@@ -15,6 +16,26 @@ const signUp = async(req,res)=>{
             PASSWORD: HashPW
         })
         await user.save()
+        let mailer = await nodemailer.createTransport({
+            service:"gmail",
+            auth:{
+                user:process.env.EMAIL,
+                pass:process.env.PASSWORD
+            }
+        })
+        let mailOptions ={
+            from:"ecommerce system",
+            to:req.body.email,
+            subject:"Welcome to stalkNbuy",
+            text:"Hi "  + req.body.name +",\n\n Welcome to stalkNbuy"
+        }
+        mailer.sendMail(mailOptions)
+        .then((result)=>{
+            console.log("email send")
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
         res.status(200).json({message:"signUp successfully"})
     }
     catch(err)
@@ -37,7 +58,7 @@ const login = async(req,res)=>
             const ValidPW = await Bcrypt.compare(req.body.password, user[0].PASSWORD);
             if(ValidPW)
             {
-                const token = await JWT.sign({Id: user._id},process.env.PRIVATE_KEY,{expiresIn:'24h'})
+                const token = await JWT.sign({_id: user[0]._id},process.env.PRIVATE_KEY,{expiresIn:'24h'})
                 res.status(200).json({message:"Logged in successfully", myToken:token});
             }
             else
@@ -58,5 +79,24 @@ const login = async(req,res)=>
         res.status(400).json({message:"login error"});
     }
 }
+const verifyToken =async(req,res)=>{
+    const token = req.query.token
+    if(!token)
+    {
+        return res.status(400).json({message:"Access deined"})
+    }
+    try
+    {
+        const verify =JWT.verify(token,process.env.PRIVATE_KEY)
+        const user = await UserModel.find({_id:verify._id})
+        console.log(user)
+        res.status(200).json({user:user})
 
-module.exports = {signUp, login};
+    }
+    catch(err)
+    {
+        res.status(400).json({message:"token expired"})
+    }
+}
+
+module.exports = {signUp, login,verifyToken};
