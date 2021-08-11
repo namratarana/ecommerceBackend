@@ -16,6 +16,8 @@ productRouter.get('/new/categories', productController.fetchProductCategory)
 userRouter.post('/createAcc', userController.signUp);
 userRouter.post('/login',userController.login);
 userRouter.get('/verify',userController.verifyToken);
+userRouter.put('/getotp',userController.getOtp);
+userRouter.post('/verifyotp',userController.verifyotp);
 
 
 const routes =(app)=>

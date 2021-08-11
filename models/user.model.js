@@ -8,7 +8,7 @@ const userModel = new Schema(
         PASSWORD:{type:String,required:true},
         WISHLIST:{type:Array},
         CART:{type:Array},
-        OTP:{type:Number}
+        OTP:{type:String}
     }
 )
 module.exports = Mongoose.model('users',userModel);

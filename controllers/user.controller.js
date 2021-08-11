@@ -2,6 +2,7 @@ const UserModel = require('../models/user.model')
 const Bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
 const nodemailer = require('nodemailer'); 
+const userModel = require('../models/user.model');
 
 const signUp = async(req,res)=>{
 
@@ -98,5 +99,57 @@ const verifyToken =async(req,res)=>{
         res.status(400).json({message:"token expired"})
     }
 }
+const getOtp= async(req,res)=>{
+    const otp =Math.floor(100000+Math.random()*900000)
+    try{
+        const salt= await Bcrypt.genSalt(10)
+        const hashotp= await Bcrypt.hash(otp.toString(),salt)
+        const user=await UserModel.findOneAndUpdate({EMAIL:req.body.email},{$set:{OTP:hashotp}})
+        let mailer = await nodemailer.createTransport({
+            service:"gmail",
+            auth:{
+                user:process.env.EMAIL,
+                pass:process.env.PASSWORD
+            }
+        })
+        let mailOptions ={
+            from:"ecommerce system",
+            to:req.body.email,
+            subject:"Welcome to stalkNbuy",
+            text:"Your OTP is "+ otp
+        }
+        mailer.sendMail(mailOptions)
+        .then((result)=>{
+            console.log("email send")
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+        res.status(200).json({message:"Otp Sent"})
+    }
+    catch(err){
+        console.log(err)
+        res.status(400).json({message:"Otp Failed"})
 
-module.exports = {signUp, login,verifyToken};
+    }
+
+}
+  const verifyotp= async(req,res)=>{
+      try{
+       const user= await UserModel.find({EMAIL:req.body.email})
+       console.log(req.body.otp,user[0].OTP)
+       const verify=await Bcrypt.compare(req.body.otp.toString(),user[0].OTP)
+       
+       if(verify){
+           res.status(200).json({message:"Verified"})
+       }
+       else{
+           res.status(400).json({message:"Not Verified"})
+       }
+      }
+      catch(err){
+          console.log(err)
+          res.status(400).json({message:"Not Verified"})
+      }
+  }
+module.exports = {signUp, login,verifyToken,getOtp,verifyotp};
