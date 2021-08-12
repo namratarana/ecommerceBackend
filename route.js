@@ -18,6 +18,7 @@ userRouter.post('/login',userController.login);
 userRouter.get('/verify',userController.verifyToken);
 userRouter.put('/getotp',userController.getOtp);
 userRouter.post('/verifyotp',userController.verifyotp);
+userRouter.put('/resetpass', userController.resetPass);
 
 
 const routes =(app)=>

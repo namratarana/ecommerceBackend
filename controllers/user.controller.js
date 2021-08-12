@@ -2,7 +2,7 @@ const UserModel = require('../models/user.model')
 const Bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
 const nodemailer = require('nodemailer'); 
-const userModel = require('../models/user.model');
+
 
 const signUp = async(req,res)=>{
 
@@ -152,4 +152,51 @@ const getOtp= async(req,res)=>{
           res.status(400).json({message:"Not Verified"})
       }
   }
-module.exports = {signUp, login,verifyToken,getOtp,verifyotp};
+
+  const resetPass = async(req,res) =>
+  {
+        try
+        {
+            const user = await UserModel.find({EMAIL: req.body.email});
+            if(user)
+            {
+                console.log(req.body.nPassword);
+                const Salt = await Bcrypt.genSalt(10);
+                const newPass = await Bcrypt.hash(req.body.nPassword, Salt);
+                await UserModel.findOneAndUpdate({EMAIL:req.body.email},{$set:{PASSWORD:newPass}})
+                
+                let mailer = await nodemailer.createTransport({
+                    service:"gmail",
+                    auth:{
+                        user:process.env.EMAIL,
+                        pass:process.env.PASSWORD
+                    }
+                })
+                let mailOptions ={
+                    from:"stalkNbuy",
+                    to:req.body.email,
+                    subject:"Successful Reset",
+                    text:"Your password is reset successfully"
+                }
+                mailer.sendMail(mailOptions)
+                .then((result)=>{
+                    console.log("email send")
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+                res.status(200).json({message:"password reset successfully"})
+            }
+            else
+            {
+                res.status(400).json({message: "User does not exist"});
+            }
+            
+        }
+        catch(err)
+        {
+            res.status(400).json({message: "error occured"})
+        }
+  }
+
+module.exports = {signUp, login,verifyToken,getOtp,verifyotp, resetPass};
