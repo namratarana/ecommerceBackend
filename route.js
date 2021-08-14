@@ -19,6 +19,7 @@ userRouter.get('/verify',userController.verifyToken);
 userRouter.put('/getotp',userController.getOtp);
 userRouter.post('/verifyotp',userController.verifyotp);
 userRouter.put('/resetpass', userController.resetPass);
+userRouter.put('/updateWishlist', userController.updateWishlist);
 
 
 const routes =(app)=>

@@ -199,4 +199,18 @@ const getOtp= async(req,res)=>{
         }
   }
 
-module.exports = {signUp, login,verifyToken,getOtp,verifyotp, resetPass};
+  const updateWishlist = async(req, res)=>
+  {
+        let userId = req.query.id;
+        try
+        {
+            await UserModel.findByIdAndUpdate({_id : userId}, {$set:{WISHLIST: req.body}})
+            res.status(200).json({message:"Added to wishlist"});
+        }
+        catch(err)
+        {
+            res.status(400).json({message:"there is an error"});
+            
+        }
+  }
+module.exports = {signUp, login,verifyToken,getOtp,verifyotp, resetPass, updateWishlist};
