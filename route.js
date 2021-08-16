@@ -20,6 +20,8 @@ userRouter.put('/getotp',userController.getOtp);
 userRouter.post('/verifyotp',userController.verifyotp);
 userRouter.put('/resetpass', userController.resetPass);
 userRouter.put('/updateWishlist', userController.updateWishlist);
+userRouter.put('/updateCart', userController.updateCart);
+
 
 
 const routes =(app)=>
