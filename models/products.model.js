@@ -17,7 +17,8 @@ const productModel = new Schema(
         SEARCH_TEXT:{type:String},
         RATING:{type:Number,index:true},
         COLOR:{type:String},
-        PRICE_RANGE:{type:String}
+        PRICE_RANGE:{type:String},
+        QTY:{type:Number}
 
       }
 

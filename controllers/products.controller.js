@@ -151,5 +151,9 @@ const fetchById = async(req,res) =>
         res.status(400).json(err);
     }
 }
+// const quantity=async(req,res)=>{
+//      await ProductModel.updateMany({},{$set:{"QTY":1}})
+//      res.send("updated")
+// }
 
 module.exports = {fetchProductCategory,fetchNewproducts,fetchPopularProducts,distinctData,fetchById};
