@@ -14,7 +14,8 @@ const signUp = async(req,res)=>{
         const user= new UserModel({
             NAME: req.body.name,
             EMAIL:req.body.email,
-            PASSWORD: HashPW
+            PASSWORD: HashPW,
+            CONTACT_DETAILS: [{Phone: req.body.phone, Address : req.body.address}]
         })
         await user.save()
         let mailer = await nodemailer.createTransport({
@@ -78,6 +79,23 @@ const login = async(req,res)=>
     {
         console.log(err);
         res.status(400).json({message:"login error"});
+    }
+}
+
+const addNewAddress = async(req,res)=>
+{
+    let userId = req.query.id;
+    try
+    {
+        console.log('reqbody-->',req.body, userId);
+
+        await UserModel.findByIdAndUpdate({_id : userId}, {$set:{CONTACT_DETAILS: req.body}})
+        res.status(200).json({message:"Added to wishlist"});
+    }
+    catch(err)
+    {
+        res.status(400).json({message:"there is an error"});
+        
     }
 }
 const verifyToken =async(req,res)=>{
@@ -228,4 +246,4 @@ const getOtp= async(req,res)=>{
         
     }
   }
-module.exports = {signUp, login,verifyToken,getOtp,verifyotp, resetPass, updateWishlist, updateCart};
+module.exports = {signUp, login,verifyToken,getOtp,verifyotp, resetPass, updateWishlist, updateCart, addNewAddress};
